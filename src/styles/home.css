@@ -1,0 +1,25 @@
+.planetList {
+    display:flex;
+    overflow-x: scroll;
+}
+.characterList {
+    width: 100vw;
+    display:flex;
+    /* overflow-x:scroll; */
+}
+.scroller {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.scroller::-webkit-scrollbar {
+    height: 10px;
+}
+.scroller::-webkit-scrollbar-track {
+    background-color: darkgray;
+    border-radius: 15px;
+}
+.scroller::-webkit-scrollbar-thumb {
+    background-color: gray;    
+    border-radius: 15px;      
+    //border: 3px solid orange;  
+}
