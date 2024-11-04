@@ -19,12 +19,14 @@ const PlanetsList = () => {
     return (
         <div>
             <div className="title">Planets</div>
-            <div className="planetList">
-                {planetList?.map((planet, index) => {
-                    return (
-                        <Planets planet={planet} key={index}/>
-                    )
-                })}
+            <div className="container">
+                <div className="planetList">
+                    {planetList?.map((planet, index) => {
+                        return (
+                            <Planets planet={planet} key={index}/>
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )

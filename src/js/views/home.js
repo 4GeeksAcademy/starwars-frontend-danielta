@@ -4,9 +4,9 @@ import "../../styles/home.css";
 import CharactersList from "../component/characterslist.jsx";
 import PlanetsList from "../component/planetslist.jsx";
 
-export const Home = () => (
+export const Home = (props) => (
 	<div className="text-center mt-5">
-		<CharactersList/>
-		<PlanetsList/>
+		<CharactersList setFavorites={props.setFavorites} favorites={props.favorites}/>
+		<PlanetsList setFavorites={props.setFavorites} favorites={props.favorites}/>
 	</div>
 );

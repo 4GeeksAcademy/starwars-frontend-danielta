@@ -1,20 +1,30 @@
+import { array } from "prop-types";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			demo: [],
+			favorites: []
 		},
 		actions: {
+
+			addToFavs: (name, uid, type) => {
+				const exist = getStore().favorites.find((favorite) => favorite.name === name)
+				if (!exist) {
+					let newFav = { name: name, uid: uid, type: type };
+					let newArr = [...getStore().favorites, newFav];
+					setStore({ favorites: newArr });
+				} else { console.log("favorite exists") }
+			},
+			deleteFav: (name) => {
+				//filter a faovrite from copy of favorites array
+				let filterArr = getStore().favorites.filter(
+					(element) => element.name != name);
+				setStore({
+					favorites: filterArr
+				})
+			},
+
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");

@@ -3,11 +3,11 @@
     overflow-x: scroll;
 }
 .characterList {
-    width: 100vw;
     display:flex;
+    overflow-x: scroll;
     /* overflow-x:scroll; */
 }
-.scroller {
+/* .scroller {
     overflow-x: auto;
     white-space: nowrap;
 }
@@ -21,5 +21,56 @@
 .scroller::-webkit-scrollbar-thumb {
     background-color: gray;    
     border-radius: 15px;      
-    //border: 3px solid orange;  
+    border: 3px solid orange;  
+} */
+
+#indivCard {
+    margin:auto;
+}
+#cardTop {
+    display: flex;
+}
+#cardTopText {
+    text-align: center;
+}
+#traitList {
+    display:flex;
+    justify-content: space-around;
+    border-top: 1px solid red;
+    padding-top: 3rem;
+    padding-bottom:3rem;
+}
+.trait {
+    display:block;
+    justify-content: space-between;
+    text-align: center;
+    font-size: large;
+    /* border-left: 1px solid red;
+    padding-left: 2rem; */
+}
+
+.card {
+    flex-shrink: 0;
+}
+
+#charImg{
+    max-width: 100%;
+    height: auto;
+}
+.favorite {
+    /* width: 45px;
+    height: 45px; */
+    color: white;
+    margin-left: 2rem;
+}
+#favItem {
+    justify-content: space-between;
+    display:flex;
+    font-size: 15px;
+    font-weight: 700;
+}
+#delete {
+    border:none;
+    background-color: red;
+    border-radius: 50%;
 }
