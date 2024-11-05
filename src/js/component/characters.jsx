@@ -6,16 +6,14 @@ import { Context } from "../store/appContext";
 const Characters = (props) => {
 
     const { store, actions } = useContext(Context);
-    const { clickCount, setClickCount } = useState(0);
     const clicker = () => {
-        if (clickCount === 0) {
+        let check = store.favorites.find((favorite) => favorite.name == props.character.name)
+        if (!check) {
             actions.addToFavs(props.character.name, props.character.uid, "people");
-            setClickCount = clickCount + 1
         } else {
-            actions.deleteFav(favorite.name);
-            setClickCount = 0
+            actions.deleteFav(props.character.name)
         }
-    }
+    };
 
     return (
         <div className="card" style={{ width: "15rem" }}>

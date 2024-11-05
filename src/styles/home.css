@@ -68,9 +68,14 @@
     display:flex;
     font-size: 15px;
     font-weight: 700;
+    margin-top: 10px;
 }
 #delete {
     border:none;
     background-color: red;
     border-radius: 50%;
 }
+.dropright .dropdown-menu{
+    left:auto!important;
+    right:0!important;
+  }
