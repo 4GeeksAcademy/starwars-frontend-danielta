@@ -2,20 +2,23 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Charactercard from "./charactercard.jsx";
 import Characters from "./characters.jsx";
+import { Context } from "../store/appContext.js";
+import { useContext } from "react";
 
 
 const CharactersList = () => {
 
-    const [ characterList, setCharacterList] = useState(null)
+    const { store, actions } = useContext(Context);
+    // const [ characterList, setCharacterList] = useState(null)
 
-    const getCharacters = () => {
-        fetch("https://www.swapi.tech/api/people")
-            .then((res) => res.json())
-            .then((response) => setCharacterList(response.results))
-            .catch((err) => console.log(err))
-    };
+    // const getCharacters = () => {
+    //     fetch("https://www.swapi.tech/api/people")
+    //         .then((res) => res.json())
+    //         .then((response) => setCharacterList(response.results))
+    //         .catch((err) => console.log(err))
+    // };
 
-    useEffect(() => { getCharacters() }, [])
+    useEffect(() => { actions.getCharacters() }, [])
 
     
     return (
@@ -23,7 +26,7 @@ const CharactersList = () => {
             <div className="title">Characters</div>
             <div className="container">
                 <div className="characterList scroller">
-                    {characterList?.map((character, index) => {
+                    {store.characterList?.map((character, index) => {
                         return (
                             <Characters character={character} key={index}/>
                         )

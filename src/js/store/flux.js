@@ -4,9 +4,47 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			demo: [],
-			favorites: []
+			favorites: [],
+			currentCharId: 0,
+			characterData: [],
+			planetData: [],
+			characterList: [],
+			planetList: []
 		},
 		actions: {
+
+			setCurrentCharId: (id) => {
+				setStore({ currentCharId: id })
+			},
+
+			getCharacters: () => {
+				fetch("https://www.swapi.tech/api/people")
+					.then((res) => res.json())
+					.then((response) => setStore({ characterList: response.results }))
+					.catch((err) => console.log(err))
+			},
+
+			getPlanets: () => {
+				fetch("https://www.swapi.tech/api/planets")
+					.then((res) => res.json())
+					.then((response) => setStore({ planetList: response.results }))
+					.catch((err) => console.log(err))
+			},
+
+			getCharacterData: (id) => {
+				fetch(`https://www.swapi.tech/api/people/${id}`)
+					.then((res) => res.json())
+					.then((response) => setStore({ characterData: response.result.properties }))
+					.catch((err) => console.log(err))
+			},
+
+			getPlanetData: (id) => {
+				fetch(`https://www.swapi.tech/api/planets/${id}`)
+					.then((res) => res.json())
+					.then((response) => setStore({ planetData: response.result.properties }))
+					.catch((err) => console.log(err))
+			},
+
 
 			addToFavs: (name, uid, type) => {
 				const exist = getStore().favorites.find((favorite) => favorite.name === name)
