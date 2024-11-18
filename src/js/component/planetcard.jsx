@@ -19,7 +19,7 @@ const PlanetCard = () => {
     // };
 
     useEffect(
-        () => { actions.getPlanetData(params.uid) }, []
+        () => { actions.getPlanetData(params.id) }, []
     );
 
     return (

@@ -1,12 +1,13 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import { Home } from "./views/home";
 import { Demo } from "./views/demo";
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
+import { Context } from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -20,12 +21,16 @@ const Layout = () => {
 	// you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
 	const basename = process.env.BASENAME || "";
 
+	const { store, actions } = useContext(Context);
+
 	const [ favorites, setFavorites ] = useState([])
 
-	const addToFavs = (name, uid, type)=>{
-		let newFav = {name:name, uid:uid, type:type}
+	const addToFavs = (name, id, type)=>{
+		let newFav = {name:name, id:id, type:type}
 		setFavorites([...favorites, newFav]);
 	}
+
+	useEffect(() => { actions.getFavs(store.userID) }, [])
 
 	return (
 		<div>
@@ -34,8 +39,8 @@ const Layout = () => {
 					<Navbar />
 					<Routes>
 						<Route path="/" element={<Home addToFavs={addToFavs} setFavorites={setFavorites} favorites={favorites}/>} />
-						<Route path="/planet/:uid" element={<PlanetCard />} />
-						<Route path="/character/:uid" element={<Charactercard />} />
+						<Route path="/planet/:id" element={<PlanetCard />} />
+						<Route path="/character/:id" element={<Charactercard />} />
 						<Route path="*" element={<h1>Not found!</h1>} />
 					</Routes>
 					<Footer />

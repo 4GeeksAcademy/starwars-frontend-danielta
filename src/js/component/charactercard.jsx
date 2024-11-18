@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { useContext } from "react";
 import { Context } from "../store/appContext";
 
-const Charactercard = (props) => {
+const Charactercard = () => {
 
     const { store, actions } = useContext(Context);
     // const [characterData, setCharacterData] = useState({})
@@ -19,7 +19,7 @@ const Charactercard = (props) => {
 
 
     useEffect(
-        () => { actions.getCharacterData(store.currentCharId) }, []
+        () => { actions.getCharacterData(params.id) }, []
     );
 
     return (
