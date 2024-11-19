@@ -9,13 +9,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			planetData: [],
 			characterList: [],
 			planetList: [],
-			userID: 3
+			userID: null
 		},
 		actions: {
 
-			// setCurrentCharId: (id) => {
-			// 	setStore({ currentCharId: id })
-			// },
+			getInitial: () => {
+				fetch("https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/get/initial")
+					.then((res) => res.json())
+					.then((response) => {setStore({characterList: response.character_records, planetList: response.planet_records})})
+					.catch((err) => console.log(err))
+			},
 
 			getCharacters: () => {
 				fetch("https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/characters")
@@ -45,6 +48,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch((err) => console.log(err))
 			},
 
+			getUser: (email, password) => {
+				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/login`, {
+					method: 'POST',
+					body: JSON.stringify(
+						{
+							"email": email,
+							"password": password 
+						}
+					),
+					headers: {
+						'Content-type': 'application/json'
+					}
+				})
+					.then(res => {
+						if (!res.ok) throw Error(res.statusText);
+						return res.json();
+					})
+					.then((response) => setStore({ userID: response.id }))
+					.catch(error => console.error(error));
+				
+			},
+
 			getFavs: (id) => {
 				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/users/${id}/favorites`)
 					.then((res) => res.json())
@@ -52,21 +77,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch((err) => console.log(err))
 			},
 
-			addCharToFavs: (id) => {
-				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/favorite/character/${id}`)
-					.then((res) => res.json())
-					.then((response) => setStore({ favorites: response }))
-					.catch((err) => console.log(err))
-			},
-
-			addCharToFavs: (id) => {
-				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/favorite/character/${id}`, {
+			addCharToFavs: (character) => {
+				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/favorite/character/${character.id}`, {
 					method: 'POST',
 					body: JSON.stringify(
 						{
 							"name": character.name,
-							"user_id": contact.phone,
-							"character_id": ,
+							"user_id": getStore().userID,
+							"character_id": character.id,
 							"planet_id": 0
 						}
 					),
@@ -78,33 +96,56 @@ const getState = ({ getStore, getActions, setStore }) => {
 						if (!res.ok) throw Error(res.statusText);
 						return res.json();
 					})
-					.then(response => getActions().getContactList())
+					.then(response => getActions().getFavs(getStore().userID))
 					.catch(error => console.error(error));
 			},
 
-			addPlanToFavs: (id) => {
-				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/favorite/planet/${id}`)
-					.then((res) => res.json())
-					.then((response) => setStore({ favorites: response }))
-					.catch((err) => console.log(err))
+			deleteCharFav: (id) => {
+				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/favorite/character/${getStore().userID}/${id}`, {
+					method: 'DELETE'
+				})
+					.then(res => {
+						if (!res.ok) throw Error(res.statusText);
+						getActions().getFavs(getStore().userID);
+					})
+					.catch(error => console.error(error));
 			},
 
-			// addToFavs: (name, uid, type) => {
-			// 	const exist = getStore().favorites.find((favorite) => favorite.name === name)
-			// 	if (!exist) {
-			// 		let newFav = { name: name, uid: uid, type: type };
-			// 		let newArr = [...getStore().favorites, newFav];
-			// 		setStore({ favorites: newArr });
-			// 	} else { console.log("favorite exists") }
-			// },
-			deleteFav: (name) => {
-				//filter a faovrite from copy of favorites array
-				let filterArr = getStore().favorites.filter(
-					(element) => element.name != name);
-				setStore({
-					favorites: filterArr
+			addPlanToFavs: (planet) => {
+				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/favorite/planet/${planet.id}`, {
+					method: 'POST',
+					body: JSON.stringify(
+						{
+							"name": planet.name,
+							"user_id": getStore().userID,
+							"character_id": 0,
+							"planet_id": planet.id
+						}
+					),
+					headers: {
+						'Content-type': 'application/json'
+					}
 				})
+					.then(res => {
+						if (!res.ok) throw Error(res.statusText);
+						return res.json();
+					})
+					.then(response => getActions().getFavs(getStore().userID))
+					.catch(error => console.error(error));
 			},
+
+			deletePlanFav: (id) => {
+				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/favorite/planet/${getStore().userID}/${id}`, {
+					method: 'DELETE'
+				})
+					.then(res => {
+						if (!res.ok) throw Error(res.statusText);
+						getActions().getFavs(getStore().userID);
+					})
+					.catch(error => console.error(error));
+			},
+
+			
 
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
@@ -134,3 +175,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 };
 
 export default getState;
+
+
+// setCurrentCharId: (id) => {
+// 	setStore({ currentCharId: id })
+// },
+
+// addCharToFavs: (id) => {
+// 	fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/favorite/character/${id}`)
+// 		.then((res) => res.json())
+// 		.then((response) => setStore({ favorites: response }))
+// 		.catch((err) => console.log(err))
+// },
+
+// addPlanToFavs: (id) => {
+// 	fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/favorite/planet/${id}`)
+// 		.then((res) => res.json())
+// 		.then((response) => setStore({ favorites: response }))
+// 		.catch((err) => console.log(err))
+// },
+
+
+// addToFavs: (name, uid, type) => {
+// 	const exist = getStore().favorites.find((favorite) => favorite.name === name)
+// 	if (!exist) {
+// 		let newFav = { name: name, uid: uid, type: type };
+// 		let newArr = [...getStore().favorites, newFav];
+// 		setStore({ favorites: newArr });
+// 	} else { console.log("favorite exists") }
+// },
+// deleteFav: (name) => {
+// 	//filter a faovrite from copy of favorites array
+// 	let filterArr = getStore().favorites.filter(
+// 		(element) => element.name != name);
+// 	setStore({
+// 		favorites: filterArr
+// 	})
+// },

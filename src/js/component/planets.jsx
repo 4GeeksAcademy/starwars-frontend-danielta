@@ -8,11 +8,11 @@ const Planets = (props) => {
 
     const { store, actions } = useContext(Context);
     const clicker = () => {
-        let check = store.favorites.find((favorite) => favorite.name == props.planet.name)
-        if (!check) {
-            actions.addToFavs(props.planet.name, props.planet.uid, "plants");
+        let favorite = store.favorites.find((favorite) => favorite.name == props.planet.name)
+        if (!favorite) {
+            actions.addPlanToFavs(props.planet);
         } else {
-            actions.deleteFav(props.planet.name)
+            actions.deletePlanFav(favorite.id)
         }
     };
     return (

@@ -8,7 +8,7 @@ import { Demo } from "./views/demo";
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 import { Context } from "./store/appContext";
-
+import Login from "./views/login.js";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import Charactercard from "./component/charactercard.jsx";
@@ -23,22 +23,26 @@ const Layout = () => {
 
 	const { store, actions } = useContext(Context);
 
-	const [ favorites, setFavorites ] = useState([])
+	const [favorites, setFavorites] = useState([])
 
-	const addToFavs = (name, id, type)=>{
-		let newFav = {name:name, id:id, type:type}
+	const addToFavs = (name, id, type) => {
+		let newFav = { name: name, id: id, type: type }
 		setFavorites([...favorites, newFav]);
 	}
 
-	useEffect(() => { actions.getFavs(store.userID) }, [])
+	
 
 	return (
 		<div>
 			<BrowserRouter basename={basename}>
 				<ScrollToTop>
-					<Navbar />
+					{store.userID ? <Navbar /> : null}
 					<Routes>
-						<Route path="/" element={<Home addToFavs={addToFavs} setFavorites={setFavorites} favorites={favorites}/>} />
+						<Route path="/login" element={<Login />} />
+						<Route path="/" element={
+							store.userID ?
+								<Home addToFavs={addToFavs} setFavorites={setFavorites} favorites={favorites} />
+								: <Login />} />
 						<Route path="/planet/:id" element={<PlanetCard />} />
 						<Route path="/character/:id" element={<Charactercard />} />
 						<Route path="*" element={<h1>Not found!</h1>} />
