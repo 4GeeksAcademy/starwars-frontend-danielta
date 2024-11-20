@@ -86,3 +86,10 @@
     margin:auto;
     width: 20vw;
 }
+
+#creator {
+    padding-top: 40vh;
+    display:grid;
+    margin:auto;
+    width: 20vw;
+}

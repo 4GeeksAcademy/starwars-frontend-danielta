@@ -9,6 +9,7 @@ import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 import { Context } from "./store/appContext";
 import Login from "./views/login.js";
+import Create from "./views/create.js";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import Charactercard from "./component/charactercard.jsx";
@@ -39,6 +40,7 @@ const Layout = () => {
 					{store.userID ? <Navbar /> : null}
 					<Routes>
 						<Route path="/login" element={<Login />} />
+						<Route path="/create" element={<Create />} />
 						<Route path="/" element={
 							store.userID ?
 								<Home addToFavs={addToFavs} setFavorites={setFavorites} favorites={favorites} />

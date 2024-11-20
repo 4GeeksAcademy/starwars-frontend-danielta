@@ -70,6 +70,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 				
 			},
 
+			createUser: (email, password) => {
+				fetch("https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/users", {
+					method: 'POST',
+					body: JSON.stringify(
+						{
+							"email": email,
+							"password": password
+						}
+					),
+					headers: {
+						'Content-type': 'application/json'
+					}
+				})
+					.then(res => {
+						if (!res.ok) throw Error("user not created");
+						return res.json();
+					})
+					.then((response) => null)
+						// getActions().getUser(email, password))
+					.catch(error => console.error(error));
+			},
+
 			getFavs: (id) => {
 				fetch(`https://musical-space-invention-v66w7566gw5x3w74r-3000.app.github.dev/users/${id}/favorites`)
 					.then((res) => res.json())

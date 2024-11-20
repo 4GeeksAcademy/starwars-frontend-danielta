@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useEffect } from "react"
 import { Context } from "../store/appContext"
 import { useContext } from "react"
+import { useNavigate } from "react-router"
 
 
 
@@ -11,12 +12,15 @@ import { useContext } from "react"
 
 const Login = () => {
 
+    let navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 
     const verify = () => {
         actions.getUser(email, password)
+        if (store.userID) navigate('/')
+        else alert("user not logged in")
     }
 
 
@@ -32,6 +36,7 @@ const Login = () => {
                     verify()
             }}}/>
             <span id="submit" className="btn btn-primary" onClick={() => {verify()}}>Login</span>
+            <span id="create" className="btn btn-warning" onClick={() => {navigate("/create")}}>Create User</span>
         </div>
     )
 }
